@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Generador y evaluador de contraseñas</title>
+  </head>
+  <body>
+    <main class="tarjeta">
+      <h1>Crea tu contraseña</h1>
+      <p class="subtitulo">Introduce una contraseña segura para tu cuenta.</p>
+
+      <label for="contrasena" class="etiqueta-campo">Contraseña</label>
+      <div class="grupo-contrasena">
+        <input
+          type="password"
+          id="contrasena"
+          class="campo-contrasena"
+          placeholder="Escribe tu contraseña"
+          autocomplete="new-password"
+        />
+        <button type="button" id="botonMostrar" class="boton-mostrar">
+          Mostrar
+        </button>
+      </div>
+
+      <div class="fortaleza">
+        <div class="barra-fortaleza">
+          <div class="barra-fortaleza-relleno" id="rellenoFortaleza"></div>
+        </div>
+        <span class="etiqueta-fortaleza" id="etiquetaFortaleza">Introduce una contraseña</span>
+      </div>
+
+      <ul class="consejos" id="consejos"></ul>
+
+      <button type="button" id="botonGenerar" class="boton-generar">
+        Generar contraseña segura
+      </button>
+    </main>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
