@@ -1,0 +1,8 @@
+[
+  { "id": 1, "nombre": "Mando PS4", "precio": 60, "stock": 5, "imagen": "/img/mandoPS4.png" },
+  { "id": 2, "nombre": "Mando PS5", "precio": 70, "stock": 3, "imagen": "/img/mandoPS5.png" },
+  { "id": 3, "nombre": "Mandos Switch", "precio": 65, "stock": 4, "imagen": "/img/mandosSwitch.png" },
+  { "id": 4, "nombre": "Mando Wii", "precio": 25, "stock": 2, "imagen": "/img/mandoWii.png" },
+  { "id": 5, "nombre": "Mando Xbox", "precio": 60, "stock": 6, "imagen": "/img/mandoXbox.png" },
+  { "id": 6, "nombre": "Mando Game Boy", "precio": 20, "stock": 3, "imagen": "/img/mandoGameBoy.png" }
+]
