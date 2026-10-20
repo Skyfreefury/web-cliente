@@ -1,0 +1,27 @@
+body {
+    margin: 0;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    background-color: #ffffff;
+    color: #222222;
+    transition: background-color 0.4s, color 0.4s;
+}
+
+/* Tema oscuro: se activa cuando el body tiene la clase "oscuro" */
+body.oscuro {
+    background-color: #1b1b1f;
+    color: #f1f1f1;
+}
+
+header {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+button,
+select {
+    padding: 8px 14px;
+    font-size: 1rem;
+    cursor: pointer;
+}
