@@ -14,17 +14,16 @@ const spinner = document.querySelector('#spinner')
 // DATOS
 // =====================================================
 
-// Pide el JSON (está en public/data) y devuelve el array de clientes
+// Pide los clientes a la API (backend en localhost:8081) y devuelve el array
 async function obtenerClientes() {
-  await new Promise(resolve => setTimeout(resolve, 2000)) // 2 segundos
-  const respuesta = await fetch('/data/data.json')
-
+  //const respuesta = await fetch('/data/data.json')
+  const respuesta = await fetch('http://localhost:8081/api/clientes')
   if (!respuesta.ok) {
     throw new Error(`Error ${respuesta.status} al cargar los datos`)
   }
 
   const data = await respuesta.json()
-  return data.clientes
+  return data
 }
 
 // =====================================================
@@ -38,10 +37,10 @@ async function mostrarClientes() {
 
     cuerpoTabla.innerHTML = clientes.map(cliente => `
       <tr>
-        <td>${cliente.id_cliente}</td>
+        <td>${cliente.id}</td>
         <td>${cliente.nombre}</td>
         <td>${cliente.apellido}</td>
-        <td>${cliente.correo}</td>
+        <td>${cliente.email}</td>
         <td>${cliente.telefono}</td>
         <td>${cliente.direccion}</td>
       </tr>
@@ -66,8 +65,8 @@ function pintarCards(clientes) {
   vistaCards.innerHTML = clientes.map(cliente => `
     <div class="card">
       <h2>${cliente.nombre} ${cliente.apellido}</h2>
-      <p><strong>ID:</strong> ${cliente.id_cliente}</p>
-      <p><strong>Correo:</strong> ${cliente.correo}</p>
+      <p><strong>ID:</strong> ${cliente.id}</p>
+      <p><strong>Correo:</strong> ${cliente.email}</p>
       <p><strong>Teléfono:</strong> ${cliente.telefono}</p>
       <p><strong>Dirección:</strong> ${cliente.direccion}</p>
     </div>

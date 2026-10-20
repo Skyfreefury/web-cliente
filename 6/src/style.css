@@ -249,13 +249,24 @@ tbody tr:hover {
   animation: aparecer 0.4s ease both;
 }
 
-#tablaClientes tbody tr {
+/* Solo animamos las primeras 20 filas (las que se ven en pantalla).
+   Animar las 10.000 bloqueaba el navegador y trababa el switch. */
+#tablaClientes tbody tr:nth-child(-n + 20) {
   animation: aparecer 0.4s ease both;
 }
 
-/* Las cards entran una detrás de otra (efecto cascada) */
-.card {
+/* Las cards entran una detrás de otra (efecto cascada).
+   Igual que la tabla: solo las primeras 24 */
+.card:nth-child(-n + 24) {
   animation: aparecerCard 0.45s ease both;
+}
+
+/* El navegador no pinta las cards que están fuera de la pantalla
+   hasta que haces scroll hasta ellas. 310px es su altura aproximada,
+   para que la barra de scroll tenga el tamaño correcto */
+.card {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 310px;
 }
 
 /* Retraso de cada elemento según su posición */
@@ -270,6 +281,7 @@ tbody tr:hover {
 .card:nth-child(9),  tbody tr:nth-child(9)  { animation-delay: 0.27s; }
 .card:nth-child(10), tbody tr:nth-child(10) { animation-delay: 0.30s; }
 .card:nth-child(n + 11), tbody tr:nth-child(n + 11) { animation-delay: 0.33s; }
+/* (a partir de la 21/25 ya no tienen animación, así que el retraso no les afecta) */
 
 /* ---------- Spinner de carga ---------- */
 
