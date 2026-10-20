@@ -1,38 +1,413 @@
+/* ---------- Colores (cámbialos aquí y cambia toda la página) ---------- */
+:root {
+  /* Negros */
+  --fondo: #0b0b0d;
+  --superficie: #16161a;
+  --superficie-2: #1d1d22;
+  --borde: #2a2a31;
+
+  /* Texto: blanco roto, más cómodo de leer que el blanco puro */
+  --texto: #ececf1;
+  --texto-suave: #9d9da8;
+
+  /* Principal: morado */
+  --morado: #8b5cf6;
+  --morado-oscuro: #6d28d9;
+  --morado-suave: rgba(139, 92, 246, 0.12);
+
+  /* Secundario: arena, para etiquetas y detalles */
+  --arena: #e0c48f;
+
+  /* Una sola sombra sutil, sin brillos */
+  --sombra: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+/* ---------- Base ---------- */
 body {
   font-family: system-ui, sans-serif;
   margin: 0;
   padding: 2rem;
-  background: #f5f5f5;
-  color: #222;
+  min-height: 100vh;
+  box-sizing: border-box;
+  background: var(--fondo);
+  color: var(--texto);
+  line-height: 1.5;
 }
 
 h1 {
   margin-top: 0;
+  font-size: 2.5rem;
+  color: var(--texto);
 }
 
+/* Subrayado morado bajo el título */
+h1::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 4px;
+  margin-top: 0.4rem;
+  border-radius: 2px;
+  background: var(--morado);
+}
+
+#mensaje {
+  color: var(--texto-suave);
+}
+
+.error {
+  color: #f87171 !important;
+  font-weight: bold;
+}
+
+/* ---------- Tabla ---------- */
 table {
   width: 100%;
-  border-collapse: collapse;
-  background: #fff;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--sombra);
 }
 
 th,
 td {
-  padding: 0.6rem 0.8rem;
-  border: 1px solid #ddd;
+  padding: 0.8rem 1rem;
   text-align: left;
+  border-bottom: 1px solid var(--borde);
 }
 
 th {
-  background: #333;
+  background: var(--morado-oscuro);
   color: #fff;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
 }
 
 tbody tr:nth-child(even) {
-  background: #f0f0f0;
+  background: var(--superficie-2);
 }
 
-.error {
-  color: #c00;
-  font-weight: bold;
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+tbody tr {
+  transition: background 0.2s ease;
+}
+
+tbody tr:hover {
+  background: var(--morado-suave);
+}
+
+/* ---------- Switch para cambiar de vista ---------- */
+.switch {
+  position: relative;
+  display: inline-grid;
+  grid-template-columns: 1fr 1fr;
+  margin-bottom: 1.5rem;
+  padding: 4px;
+  border: 1px solid var(--borde);
+  border-radius: 999px;
+  background: var(--superficie);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* La "pastilla" que se desliza de un lado a otro */
+.switch::before {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: calc(50% - 4px);
+  height: calc(100% - 8px);
+  border-radius: 999px;
+  background: var(--morado);
+  /* El rebote al final viene de este cubic-bezier */
+  transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+/* Con la clase .activo la pastilla se mueve a la derecha (Cards) */
+.switch.activo::before {
+  transform: translateX(100%);
+}
+
+/* Los dos textos van por encima de la pastilla */
+.switch-opcion {
+  position: relative;
+  z-index: 1;
+  padding: 0.5rem 1.4rem;
+  color: var(--texto-suave);
+  transition: color 0.3s ease;
+}
+
+/* La opción que está debajo de la pastilla se pone en blanco */
+.switch:not(.activo) .switch-opcion:first-child,
+.switch.activo .switch-opcion:last-child {
+  color: #fff;
+}
+
+.switch:focus-visible {
+  outline: 2px solid var(--arena);
+  outline-offset: 3px;
+}
+
+/* Oculta la vista que no se está usando */
+.oculto {
+  display: none !important;
+}
+
+/* ---------- Vista en cards: cuadrícula ---------- */
+#vistaCards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.2rem;
+}
+
+/* Cada card (un cliente) */
+.card {
+  position: relative;
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: 12px;
+  padding: 1.2rem;
+  overflow: hidden;
+  box-shadow: var(--sombra);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+/* Franja de color arriba de cada card */
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--morado);
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  border-color: var(--morado);
+}
+
+.card h2 {
+  margin: 0.3rem 0 0.8rem;
+  font-size: 1.2rem;
+}
+
+/* Cada campo del cliente en su propia fila de la card */
+.card p {
+  display: grid;
+  grid-template-columns: 90px 1fr;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0.5rem 0;
+  border-top: 1px solid var(--borde);
+  overflow-wrap: anywhere;
+}
+
+.card p strong {
+  color: var(--arena);
+  font-weight: 600;
+}
+
+/* ---------- Animaciones del cambio de vista ----------
+   Al quitar .oculto, el elemento pasa de display:none a verse
+   y el navegador vuelve a lanzar la animación él solo. */
+
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes aparecerCard {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* La tabla entra subiendo y sus filas una detrás de otra */
+#tablaClientes {
+  animation: aparecer 0.4s ease both;
+}
+
+#tablaClientes tbody tr {
+  animation: aparecer 0.4s ease both;
+}
+
+/* Las cards entran una detrás de otra (efecto cascada) */
+.card {
+  animation: aparecerCard 0.45s ease both;
+}
+
+/* Retraso de cada elemento según su posición */
+.card:nth-child(1),  tbody tr:nth-child(1)  { animation-delay: 0.03s; }
+.card:nth-child(2),  tbody tr:nth-child(2)  { animation-delay: 0.06s; }
+.card:nth-child(3),  tbody tr:nth-child(3)  { animation-delay: 0.09s; }
+.card:nth-child(4),  tbody tr:nth-child(4)  { animation-delay: 0.12s; }
+.card:nth-child(5),  tbody tr:nth-child(5)  { animation-delay: 0.15s; }
+.card:nth-child(6),  tbody tr:nth-child(6)  { animation-delay: 0.18s; }
+.card:nth-child(7),  tbody tr:nth-child(7)  { animation-delay: 0.21s; }
+.card:nth-child(8),  tbody tr:nth-child(8)  { animation-delay: 0.24s; }
+.card:nth-child(9),  tbody tr:nth-child(9)  { animation-delay: 0.27s; }
+.card:nth-child(10), tbody tr:nth-child(10) { animation-delay: 0.30s; }
+.card:nth-child(n + 11), tbody tr:nth-child(n + 11) { animation-delay: 0.33s; }
+
+/* ---------- Spinner de carga ---------- */
+
+/* Capa que tapa toda la página mientras carga */
+.spinner {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  background: rgba(11, 11, 13, 0.92);
+  backdrop-filter: blur(4px);
+  animation: aparecer 0.3s ease both;
+}
+
+/* Contenedor de los anillos: todos se apilan en el centro */
+.spinner-anillos {
+  position: relative;
+  width: 90px;
+  height: 90px;
+}
+
+.anillo {
+  position: absolute;
+  border-radius: 50%;
+  border: 3px solid transparent;
+}
+
+/* Anillo grande morado: gira en sentido horario */
+.anillo-exterior {
+  inset: 0;
+  border-top-color: var(--morado);
+  border-right-color: var(--morado);
+  animation: girar 1.2s cubic-bezier(0.6, 0.2, 0.4, 0.8) infinite;
+}
+
+/* Pista tenue debajo del anillo grande (va en el contenedor
+   para que quede por detrás del anillo morado y no encima) */
+.spinner-anillos::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 3px solid var(--borde);
+}
+
+/* Anillo pequeño arena: gira al revés y más rápido */
+.anillo-interior {
+  inset: 18px;
+  border-bottom-color: var(--arena);
+  border-left-color: var(--arena);
+  animation: girar 0.9s linear infinite reverse;
+}
+
+/* Punto central que late */
+.nucleo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  margin: -6px 0 0 -6px;
+  border-radius: 50%;
+  background: var(--morado);
+  animation: latir 1.2s ease-in-out infinite;
+}
+
+.spinner-texto {
+  margin: 0;
+  color: var(--texto-suave);
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Los tres puntos saltan uno detrás de otro */
+.puntos span {
+  display: inline-block;
+  color: var(--arena);
+  animation: saltar 1.2s ease-in-out infinite;
+}
+
+.puntos span:nth-child(2) { animation-delay: 0.15s; }
+.puntos span:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes girar {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes latir {
+  0%, 100% {
+    transform: scale(0.6);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+}
+
+@keyframes saltar {
+  0%, 60%, 100% {
+    transform: translateY(0);
+    opacity: 0.4;
+  }
+  30% {
+    transform: translateY(-6px);
+    opacity: 1;
+  }
+}
+
+/* Si el usuario tiene desactivadas las animaciones en su sistema, se respetan */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* ---------- Móvil ---------- */
+@media (max-width: 600px) {
+  body {
+    padding: 1rem;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  th,
+  td {
+    padding: 0.5rem;
+    font-size: 0.85rem;
+  }
 }

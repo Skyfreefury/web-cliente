@@ -7,10 +7,26 @@
     <title>Clientes</title>
   </head>
   <body>
+    <!-- Spinner de carga: visible desde el principio, JS lo oculta al terminar -->
+    <div id="spinner" class="spinner" role="status" aria-live="polite">
+      <div class="spinner-anillos">
+        <span class="anillo anillo-exterior"></span>
+        <span class="anillo anillo-interior"></span>
+        <span class="nucleo"></span>
+      </div>
+      <p class="spinner-texto">
+        Cargando clientes<span class="puntos"><span>.</span><span>.</span><span>.</span></span>
+      </p>
+    </div>
+
     <h1>Clientes</h1>
 
     <p id="mensaje">Cargando clientes...</p>
-
+    <button id="botonVista" class="switch" type="button" aria-pressed="false">
+      <span class="switch-opcion">Tabla</span>
+      <span class="switch-opcion">Cards</span>
+    </button>
+    <div id="vistaCards" class="oculto"></div>
     <table id="tablaClientes">
       <thead>
         <tr>
