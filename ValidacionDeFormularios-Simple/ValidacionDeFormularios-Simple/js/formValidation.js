@@ -58,6 +58,7 @@ condicionesInputs.forEach(input => input.addEventListener("change", handleValida
 diasInputs.forEach(input => input.addEventListener("change", handleValidarDias))
 horaInput.addEventListener("change", handleValidarHora)
 clasesInput.addEventListener("change", handleValidarClases)
+clasesInput.addEventListener("mousedown", handleMarcarClase)
 referidoInput.addEventListener("blur", handleValidarReferido)
 nifFacturaInput.addEventListener("blur", handleValidarNifFactura)
 direccionFacturaInput.addEventListener("blur", handleValidarDireccionFactura)
@@ -266,11 +267,24 @@ function handleValidarIBAN(event){
 }
 function handleValidarFechaNacimiento(event){
     const valor = fechaNacimientoInput.value.trim()
+    const fecha = new Date(valor + "T00:00")
+    const hoy = new Date()
+    let edad = hoy.getFullYear() - fecha.getFullYear()
+    const meses = hoy.getMonth() - fecha.getMonth()
+    if(meses < 0 || (meses === 0 && hoy.getDate() < fecha.getDate())){
+        edad--
+    }
     if(valor === ""){
         showError(fechaNacimientoInput, "La fecha de nacimiento es obligatoria")
     }
-    else if(new Date(valor) > new Date()){
+    else if(fecha > hoy){
         showError(fechaNacimientoInput, "La fecha de nacimiento no puede ser futura")
+    }
+    else if(edad < 15){
+        showError(fechaNacimientoInput, "Debes tener al menos 15 años")
+    }
+    else if(edad > 120){
+        showError(fechaNacimientoInput, "La edad no puede superar los 120 años")
     }
     else{
         clearError(fechaNacimientoInput)
@@ -360,6 +374,13 @@ function handleValidarClases(event){
     }
     else{
         clearError(clasesInput)
+    }
+}
+function handleMarcarClase(event){
+    if(event.target.tagName === "OPTION"){
+        event.preventDefault()
+        event.target.selected = !event.target.selected
+        handleValidarClases()
     }
 }
 function handleValidarReferido(event){
