@@ -98,9 +98,7 @@ function handleEnviar(event){
 
     const errores = formulario.querySelectorAll(".error-msg")
     if(errores.length > 0){
-        let mensaje = "Formulario NO enviado. Hay " + errores.length + " errores:\n"
-        errores.forEach(error => mensaje += "\n- " + error.innerText)
-        alert(mensaje)
+        alert("Formulario no enviado. Revisa los campos marcados en rojo.")
     }
     else{
         alert("Formulario enviado")
